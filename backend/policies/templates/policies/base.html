@@ -1,0 +1,41 @@
+{% load static %}
+<!doctype html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}NGFW Panel{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'policies/app.css' %}">
+</head>
+<body>
+{% if user.is_authenticated %}
+<header class="topbar">
+    <a class="brand" href="{% url 'rules-page' %}">NGFW Panel</a>
+
+    <nav>
+        <a href="{% url 'rules-page' %}">Kurallar</a>
+        <a href="{% url 'history-page' %}">Geçmiş</a>
+        <a href="{% url 'logs-page' %}">Loglar</a>
+    </nav>
+
+    <div class="account">
+        <span>{{ user.username }}</span>
+        <a href="{% url 'password_change' %}">Şifre</a>
+
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button class="link-button" type="submit">Çıkış</button>
+        </form>
+    </div>
+</header>
+{% endif %}
+
+<main class="container">
+    {% for message in messages %}
+        <div class="message {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>

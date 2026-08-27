@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "id": "allow-lan-to-wan",
+      "enabled": true,
+      "source_zone": "lan",
+      "destination_zone": "wan",
+      "source_cidr": "192.168.50.0/24",
+      "destination_cidr": "0.0.0.0/0",
+      "protocol": "any",
+      "action": "accept",
+      "log": false
+    }
+  ]
+}

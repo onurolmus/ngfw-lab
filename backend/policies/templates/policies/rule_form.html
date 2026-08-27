@@ -1,0 +1,21 @@
+{% extends "policies/base.html" %}
+
+{% block title %}{{ title }} | NGFW{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h1>{{ title }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="actions">
+            <button class="button primary" type="submit">Kaydet</button>
+            <a class="button secondary" href="{% url 'rules-page' %}">
+                İptal
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

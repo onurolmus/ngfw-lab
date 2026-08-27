@@ -1,0 +1,16 @@
+{% extends "policies/base.html" %}
+
+{% block title %}Giriş | NGFW{% endblock %}
+
+{% block content %}
+<div class="login-card">
+    <h1>NGFW Yönetimi</h1>
+    <p>Devam etmek için yönetici hesabıyla giriş yapın.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="button primary full" type="submit">Giriş yap</button>
+    </form>
+</div>
+{% endblock %}

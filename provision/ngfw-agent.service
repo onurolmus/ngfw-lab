@@ -1,0 +1,21 @@
+[Unit]
+Description=NGFW Config Agent API
+Wants=network-online.target
+After=network-online.target nftables.service
+Requires=nftables.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+EnvironmentFile=/etc/ngfw-agent/agent.env
+ExecStart=/usr/local/sbin/ngfw-agent serve
+Restart=on-failure
+RestartSec=2
+UMask=0077
+PrivateTmp=true
+ProtectHome=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

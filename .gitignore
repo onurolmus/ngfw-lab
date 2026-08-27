@@ -1,0 +1,21 @@
+# Vagrant ve büyük box dosyaları
+.vagrant/
+*.box
+vagrant_*.deb
+# Config-agent çıktıları ve sırlar
+config-agent/ngfw-agent
+config-agent/ngfw-agent.token
+config-agent/ngfw-agent.env
+config-agent/ngfw-candidate.nft
+config-agent/go*.linux-amd64.tar.gz
+*.token
+*.env
+
+# Django
+backend/db.sqlite3
+backend/staticfiles/
+__pycache__/
+*.py[cod]
+
+# Genel
+*.log

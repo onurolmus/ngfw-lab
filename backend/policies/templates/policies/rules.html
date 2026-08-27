@@ -1,0 +1,101 @@
+{% extends "policies/base.html" %}
+
+{% block title %}Kurallar | NGFW{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Firewall kuralları</h1>
+
+        {% if has_unapplied_changes %}
+            <span class="badge warning">Uygulanmamış değişiklikler</span>
+        {% else %}
+            <span class="badge success">Policy güncel</span>
+        {% endif %}
+
+        {% if last_applied %}
+            <p class="muted">
+                Son uygulama:
+                {{ last_applied.created_at|date:"d.m.Y H:i:s" }}
+            </p>
+        {% endif %}
+    </div>
+
+    <div class="actions">
+        <a class="button" href="{% url 'rule-create' %}">
+            Yeni kural
+        </a>
+
+        <form method="post" action="{% url 'web-apply-policy' %}">
+            {% csrf_token %}
+            <button class="button primary" type="submit">
+                Policy'yi uygula
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="table-wrap">
+<table>
+    <thead>
+    <tr>
+        <th>Sıra</th>
+        <th>Kural</th>
+        <th>Kaynak</th>
+        <th>Hedef</th>
+        <th>Protokol</th>
+        <th>İşlem</th>
+        <th>Log</th>
+        <th>Durum</th>
+        <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for rule in rules %}
+    <tr {% if not rule.enabled %}class="disabled-row"{% endif %}>
+        <td>{{ rule.priority }}</td>
+        <td><strong>{{ rule.rule_id }}</strong></td>
+        <td>
+            {{ rule.source_zone|upper }}<br>
+            <span class="muted">{{ rule.source_cidr }}</span>
+        </td>
+        <td>
+            {{ rule.destination_zone|upper }}<br>
+            <span class="muted">{{ rule.destination_cidr }}</span>
+        </td>
+        <td>
+            {{ rule.protocol|upper }}
+            {% if rule.destination_port %}
+                / {{ rule.destination_port }}
+            {% endif %}
+        </td>
+        <td>
+            <span class="badge {{ rule.action }}">
+                {{ rule.get_action_display }}
+            </span>
+        </td>
+        <td>{% if rule.log %}Açık{% else %}Kapalı{% endif %}</td>
+        <td>{% if rule.enabled %}Aktif{% else %}Pasif{% endif %}</td>
+        <td class="row-actions">
+            <a href="{% url 'rule-edit' rule.id %}">Düzenle</a>
+
+            <form
+                method="post"
+                action="{% url 'rule-delete' rule.id %}"
+                onsubmit="return confirm('Kural silinsin mi?');"
+            >
+                {% csrf_token %}
+                <button class="danger-link" type="submit">Sil</button>
+            </form>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="9" class="empty">Henüz kural bulunmuyor.</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

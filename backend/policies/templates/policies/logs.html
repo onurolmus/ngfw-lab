@@ -1,0 +1,26 @@
+{% extends "policies/base.html" %}
+
+{% block title %}Loglar | NGFW{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Trafik logları</h1>
+        <p class="muted">En yeni 100 NGFW kernel kaydı.</p>
+    </div>
+
+    <a class="button" href="{% url 'logs-page' %}">Yenile</a>
+</div>
+
+{% if log_error %}
+    <div class="message error">{{ log_error }}</div>
+{% endif %}
+
+<div class="log-box">
+{% for line in firewall_logs %}
+    <div class="log-line">{{ line }}</div>
+{% empty %}
+    <div class="empty">Henüz firewall logu bulunmuyor.</div>
+{% endfor %}
+</div>
+{% endblock %}
